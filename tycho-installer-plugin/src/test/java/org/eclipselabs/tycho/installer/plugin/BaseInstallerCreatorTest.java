@@ -18,7 +18,7 @@ public class BaseInstallerCreatorTest {
 	public void setup() throws Exception {
 		productDir = ResourceExtractor.simpleExtractResources(getClass(),
 				"/test-app/Test App");
-		installerDir = new File(productDir, "installer");
+		installerDir = new File(productDir.getParentFile(), "installer");
 		installerDir.delete();
 		installerDir.mkdirs();
 		File productFile = ResourceExtractor.simpleExtractResources(getClass(),
