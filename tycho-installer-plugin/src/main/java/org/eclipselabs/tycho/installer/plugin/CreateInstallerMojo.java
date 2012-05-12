@@ -94,7 +94,7 @@ public class CreateInstallerMojo extends AbstractMojo {
             	throw new MojoExecutionException("Can't create installer target directory " + installerDir);
             }
             InstallerConfig config = new InstallerConfig(installerName, productDir, installerDir, product);
-            getLog().info(config.toString());
+            getLog().debug(config.toString());
 
             installerCreator.createInstaller(config);
         } catch (Exception e) {
