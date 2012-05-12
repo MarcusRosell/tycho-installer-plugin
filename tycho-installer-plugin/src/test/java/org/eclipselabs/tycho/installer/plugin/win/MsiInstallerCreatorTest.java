@@ -86,7 +86,7 @@ public class MsiInstallerCreatorTest extends BaseInstallerCreatorTest {
         assumeTrue(Os.isFamily(Os.FAMILY_WINDOWS));
 
         msiInstallerCreator.createInstaller(config);
-        File msiInstallerFile = new File(installerDir.getAbsolutePath() + ".msi");
+        File msiInstallerFile = new File(installerDir, config.installerName + ".msi");
         assertTrue("Expected that file '" + msiInstallerFile + "' exists!" , msiInstallerFile.exists());
     }
 }
