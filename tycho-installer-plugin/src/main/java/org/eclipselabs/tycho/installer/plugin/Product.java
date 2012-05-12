@@ -33,11 +33,15 @@ public class Product {
     	DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     	Document productConfig = documentBuilder.parse(productFile);
 		this.name = valueFromXPath(productConfig, "/product/@name");
-		this.version = valueFromXPath(productConfig, "/product/@version");
+		this.version = replaceQualifier(valueFromXPath(productConfig, "/product/@version"));
 		this.launcherName = valueFromXPath(productConfig, "/product/launcher/@name");
 		this.manufacturer = manufacturer;
 		this.upgradeCode = UUID.nameUUIDFromBytes(name.getBytes()).toString();
 		this.licenseText = valueFromXPath(productConfig, "/product/license/text");
+	}
+
+	private String replaceQualifier(String osgiVersion) {
+		return osgiVersion.replace(".qualifier", ".0");
 	}
 
 	private String valueFromXPath(Document productConfig, String xpath) throws XPathExpressionException {

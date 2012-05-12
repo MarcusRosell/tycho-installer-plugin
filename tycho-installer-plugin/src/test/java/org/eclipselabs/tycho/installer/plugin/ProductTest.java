@@ -14,7 +14,7 @@ public class ProductTest {
 		File productFile = ResourceExtractor.simpleExtractResources(getClass(), "/test-app/test.product");
 		Product product = new Product(productFile, "eclipselabs.org");
 		assertEquals("Test App", product.name);
-		assertEquals("1.0.0.qualifier", product.version);
+		assertEquals("1.0.0.0", product.version);
 		assertEquals("Test App", product.launcherName);
 		assertEquals("This is a simple license text.", product.licenseText.trim());
 	}
