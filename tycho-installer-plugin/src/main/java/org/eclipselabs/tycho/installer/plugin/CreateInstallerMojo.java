@@ -63,7 +63,8 @@ public class CreateInstallerMojo extends AbstractMojo {
         	throw new MojoExecutionException("Can't create installer target directory " + installerDir);
         }
         try {
-            Product product = new Product(productFile, manufacturer);
+        	String buildQualifier = mavenProject.getProperties().getProperty("buildQualifier");
+            Product product = new Product(productFile, manufacturer, buildQualifier);
             InstallerConfig config = new InstallerConfig(installerName, productDir, installerDir, product);
             getLog().info(config.toString());
 

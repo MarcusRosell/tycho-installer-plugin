@@ -23,7 +23,7 @@ public class BaseInstallerCreatorTest {
 		installerDir.mkdirs();
 		File productFile = ResourceExtractor.simpleExtractResources(getClass(),
 				"/test-app/test.product");
-		Product product = new Product(productFile, "eclipselabs.org");
+		Product product = new Product(productFile, "eclipselabs.org", null);
 		config = new InstallerConfig(installerName, productDir, installerDir,
 				product);
 	}

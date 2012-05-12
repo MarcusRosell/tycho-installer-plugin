@@ -28,7 +28,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<rootFolder>Test App</rootFolder>
+					<rootFolder>Test-App</rootFolder>
 				</configuration>
 			</plugin>
 			<plugin>
