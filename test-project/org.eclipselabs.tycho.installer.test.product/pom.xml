@@ -46,11 +46,35 @@
 				</executions>
 				<configuration>
 					<manufacturer>eclipselabs.org</manufacturer>
-					<productDir>${project.build.directory}/products/org.eclipselabs.tycho.installer.app.product/macosx/cocoa/x86_64</productDir>
+					<productDir>${product.dir}</productDir>
 					<productFile>${project.basedir}/test.product</productFile>
 					<installerName>TestApp-${project.version}</installerName>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>create-dmg-installer</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<product.dir>${project.build.directory}/products/org.eclipselabs.tycho.installer.app.product/macosx/cocoa/x86_64</product.dir>
+			</properties>
+		</profile>
+		<profile>
+			<id>create-msi-installer</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<product.dir>${project.build.directory}/products/org.eclipselabs.tycho.installer.app.product/win32/win32/x86</product.dir>
+			</properties>
+		</profile>
+	</profiles>
 </project>
