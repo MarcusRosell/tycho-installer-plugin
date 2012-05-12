@@ -69,7 +69,7 @@ productWxsFile(product) ::= <<
     </UI>
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch $product.name$" />
 
-    <Property Id="WixShellExecTarget" Value="[#n4-ide.exe]" />
+    <Property Id="WixShellExecTarget" Value="[#$product.launcherName$.exe]" />
     <CustomAction Id="LaunchApplication"
       BinaryKey="WixCA"
       DllEntry="WixShellExec"

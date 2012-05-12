@@ -46,7 +46,7 @@ public class MsiInstallerCreatorTest extends BaseInstallerCreatorTest {
     public void generateProductWxsFile() throws Exception {
         File productWxsFile = tempFolder.newFile("product.wxs");
         Product product = new Product("Test App", "1.0.0",
-                "eclipselabs.org", "Test App", "License Text", "UPGRADE_GUID");
+                "eclipselabs.org", "License Text", "Test App", "UPGRADE_GUID");
 
         msiInstallerCreator.generateProductWxsFile(product, productWxsFile);
 
