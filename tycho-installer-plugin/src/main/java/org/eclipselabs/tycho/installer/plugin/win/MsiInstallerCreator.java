@@ -62,13 +62,13 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
     public void verifyToolSetup() throws IllegalStateException {
     	try {
     		Commandline heatCmd = buildCmd("heat", Collections.<String>emptyList());
-			executeCmd(heatCmd);
+			executeCmd(heatCmd, false);
 
     		Commandline candleCmd = buildCmd("candle", Collections.<String>emptyList());
-			executeCmd(candleCmd);
+			executeCmd(candleCmd, false);
 
     		Commandline lightCmd = buildCmd("light", Collections.<String>emptyList());
-			executeCmd(lightCmd);
+			executeCmd(lightCmd, false);
 		} catch (CommandLineException e) {
 			throw new IllegalStateException(e);
 		}

@@ -14,6 +14,13 @@ import org.eclipselabs.tycho.installer.plugin.win.MsiInstallerCreator;
 import com.google.common.base.Joiner;
 
 /**
+ * This goal creates native installers from a eclipse product build with tycho.
+ * <ul> 
+ *  <li>When running on Mac OS X it will create a dmg installer via the <code>hdiutil</code> program.</li>
+ *  <li>When running on Windows it will create a msi installer via the <a href="http://wix.sourceforge.net/">WiX</a> program.</li>
+ * </ul>
+ * This goal will fail if the required native programs can't be found.
+ * 
  * @goal create-installer
  * @requiresProject true
  */
@@ -25,29 +32,41 @@ public class CreateInstallerMojo extends AbstractMojo {
     protected MavenProject mavenProject;
 
     /**
+     * The name of the maufacturer, needed for creating a msi installer.
+     * 
      * @parameter
      * @required
      */
     private String manufacturer;
 
     /**
+     * The directory where the tycho build product can be found. If not specified it will use the  default location
+     * used by the eclipse-repository pacakge type when using the materialize-products goal.
+     * 
      * @parameter
      */
     private File productDir;
 
     /**
+     * Path to the .product file. The .product file is used to retrieve the metadata for the installer.
+     * 
      * @parameter default-value="${project.basedir}/${project.artifactId}.product"
      * @required
      */
     private File productFile;
 
     /**
+     * Directory where the created installer is saved.
+     * 
      * @parameter default-value="${project.build.directory}/installer"
      * @required
      */
     private File installerDir;
 
     /**
+     * The base name of the installer, the resulting installer will have this name with the 
+     * corresponding file suffix .dmg or .msi.
+     * 
      * @parameter
      * @required
      */
@@ -57,7 +76,7 @@ public class CreateInstallerMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         InstallerCreator installerCreator = getInstallerCreator();
         if (installerCreator == null) {
-            getLog().info("No installer creator found!");
+            getLog().info("Installer can't be created when running on this OS!");
             return;
         }
         installerCreator.verifyToolSetup();

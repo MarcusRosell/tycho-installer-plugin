@@ -28,9 +28,13 @@ public abstract class AbstractInstallerCreator implements InstallerCreator {
             }
         };
     }
-
+    
     protected void executeCmd(Commandline cmd) throws CommandLineException {
-        if (CommandLineUtils.executeCommandLine(cmd, outStreamConsumer, errStreamConsumer) != 0)
+    	executeCmd(cmd, true);
+    }
+
+    protected void executeCmd(Commandline cmd, boolean logOutput) throws CommandLineException {
+        if (CommandLineUtils.executeCommandLine(cmd, logOutput ? outStreamConsumer : null, errStreamConsumer) != 0)
             throw new CommandLineException("Error executing cmd:" + cmd);
     }
 
