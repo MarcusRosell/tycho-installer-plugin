@@ -51,5 +51,8 @@
       <plugin id="org.eclipselabs.tycho.installer.test.app"/>
    </plugins>
 
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+   </configurations>
 
 </product>

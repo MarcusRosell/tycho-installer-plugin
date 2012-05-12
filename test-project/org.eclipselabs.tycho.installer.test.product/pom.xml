@@ -31,6 +31,26 @@
 					<rootFolder>Test App</rootFolder>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipselabs.tycho.installer.plugin</groupId>
+				<artifactId>tycho-installer-plugin</artifactId>
+				<version>0.9.0-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>create-installer</id>
+						<phase>package</phase>
+						<goals>
+							<goal>create-installer</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<manufacturer>eclipselabs.org</manufacturer>
+					<productDir>${project.build.directory}/products/org.eclipselabs.tycho.installer.app.product/macosx/cocoa/x86_64</productDir>
+					<productFile>${project.basedir}/test.product</productFile>
+					<installerName>TestApp-${project.version}</installerName>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
