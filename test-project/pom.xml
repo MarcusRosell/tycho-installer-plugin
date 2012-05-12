@@ -22,6 +22,7 @@
   
   <modules>
     <module>org.eclipselabs.tycho.installer.test.app</module>
+    <module>org.eclipselabs.tycho.installer.test.feature</module>
     <module>org.eclipselabs.tycho.installer.test.product</module>
   </modules>
   
