@@ -39,7 +39,7 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
 
     @Override
     public void createInstaller(InstallerConfig config) throws Exception {
-        File dmgProductDir = new File(new File(config.productDir.getParentFile(), "dmg"), config.productRootName);
+        File dmgProductDir = new File(new File(config.productDir.getParentFile(), "dmg"), config.installerName);
         dmgProductDir.mkdirs();
 
         repackageProduct(config, config.productDir, dmgProductDir);
@@ -48,7 +48,8 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
     }
 
     private void repackageProduct(final InstallerConfig config, File productDir, File dmgProductDir) throws Exception {
-        File appDir = new File(productDir, config.product.getMacOsXAppName());
+    	final String appName = config.product.launcherName + ".app";
+        File appDir = new File(productDir, appName);
         if (!appDir.exists()) {
             throw new IllegalStateException("No app was found at:'" + appDir + "'!");
         }
@@ -62,7 +63,7 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
 
             @Override
             public boolean accept(File dir, String name) {
-                return !name.equals(config.product.getMacOsXAppName());
+				return !name.equals(appName);
             }
         });
         for (File fileToCopy : filesToCopy) {
@@ -154,6 +155,7 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
         Commandline cmd = new Commandline();
         cmd.setExecutable("ln");
         File linkToApplications = new File(dmgProductDir, APPLICATIONS_FOLDER_NAME);
+        linkToApplications.delete();
         cmd.addArguments(new String[] {
                 "-s", "/" + APPLICATIONS_FOLDER_NAME,
                 linkToApplications.getAbsolutePath()});
@@ -162,7 +164,8 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
 
 
     private void createProductDmg(InstallerConfig config, File dmgProductDir) throws CommandLineException {
-        File dmgInstallerFile = new File(config.installerFile.getAbsolutePath() + ".dmg");
+        File dmgInstallerFile = new File(config.installerDir, config.installerName + ".dmg");
+        dmgInstallerFile.delete();
         Commandline cmd = new Commandline();
         cmd.setExecutable(hdiutil.getAbsolutePath());
         cmd.addArguments(new String[]{

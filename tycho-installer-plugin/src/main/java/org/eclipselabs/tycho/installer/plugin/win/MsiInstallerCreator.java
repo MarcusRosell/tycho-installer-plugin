@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
@@ -80,13 +79,13 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
         File msiProductDir = new File(config.productDir.getParentFile(), "msi");
         msiProductDir.mkdirs();
 
-        File productFilesWxsFile = new File(msiProductDir, config.productRootName + "-files.wxs");
+        File productFilesWxsFile = new File(msiProductDir, config.installerName + "-files.wxs");
         harvestDir(config.productDir, false, "ProductFiles", "APPLICATIONROOTDIRECTORY", productFilesWxsFile);
 
-        File productWxsFile = new File(msiProductDir, config.productRootName + ".wxs");
+        File productWxsFile = new File(msiProductDir, config.installerName + ".wxs");
         generateProductWxsFile(config.product, productWxsFile);
 
-        File licenseFile = createLicenseFile(msiProductDir, config.product.getLicenseText());
+        File licenseFile = createLicenseFile(msiProductDir, config.product.licenseText);
         List<File> compiledWxsFiles = compileWxsFiles(productFilesWxsFile, productWxsFile);
         createMsiInstaller(config, config.productDir, compiledWxsFiles, licenseFile);
     }
@@ -148,7 +147,7 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
         List<String> args = new ArrayList<String>();
 
         args.add("-dWixUILicenseRtf=" + licenseFile.getAbsolutePath());
-        Collections.addAll(args, "-out", new File(config.installerFile.getAbsolutePath() + ".msi").getAbsolutePath());
+        Collections.addAll(args, "-out", new File(config.installerDir, config.installerName + ".msi").getAbsolutePath());
 
         for (File compiledWxsFile : compiledWxsFiles) {
             args.add(compiledWxsFile.getAbsolutePath());

@@ -17,7 +17,7 @@ import org.eclipselabs.tycho.installer.plugin.win.MsiInstallerCreator;
 public class CreateInstallerMojo extends AbstractMojo {
     /**
      * @parameter default-value="${project}"
-     * @required
+     * @readonly
      */
     protected MavenProject mavenProject;
 
@@ -34,10 +34,22 @@ public class CreateInstallerMojo extends AbstractMojo {
     private File productDir;
 
     /**
-     * @parameter default-value="${project.artifactId}.product"
+     * @parameter default-value="${project.basedir}/${project.artifactId}.product"
      * @required
      */
-    private String productFile;
+    private File productFile;
+
+    /**
+     * @parameter default-value="${project.build.directory}/installer"
+     * @required
+     */
+    private File installerDir;
+
+    /**
+     * @parameter
+     * @required
+     */
+    private String installerName;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -47,13 +59,12 @@ public class CreateInstallerMojo extends AbstractMojo {
             return;
         }
         installerCreator.verifyToolSetup();
+        if (!installerDir.mkdirs()) {
+        	throw new MojoExecutionException("Can't create installer target directory " + installerDir);
+        }
         try {
-            File productFile = new File(mavenProject.getBasedir(), this.productFile);
             Product product = new Product(productFile, manufacturer);
-            String productRootName = product.getLauncherName() + "-" + product.getVersion();
-            File installerFile = new File(mavenProject.getBuild().getDirectory(), productRootName);
-
-            InstallerConfig config = new InstallerConfig(productRootName, productDir, installerFile, product);
+            InstallerConfig config = new InstallerConfig(installerName, productDir, installerDir, product);
             getLog().info(config.toString());
 
             installerCreator.createInstaller(config);

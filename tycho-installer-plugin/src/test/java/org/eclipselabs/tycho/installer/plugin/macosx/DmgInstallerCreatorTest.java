@@ -19,7 +19,7 @@ import org.junit.Test;
  * Mac OS X specific.
  */
 public class DmgInstallerCreatorTest extends BaseInstallerCreatorTest {
-	
+
 	private DmgInstallerCreator dmgInstallerCreator = new DmgInstallerCreator(
 			new SystemStreamLog());
 
@@ -35,7 +35,7 @@ public class DmgInstallerCreatorTest extends BaseInstallerCreatorTest {
 		assumeTrue(Os.isFamily(Os.FAMILY_MAC));
 
 		dmgInstallerCreator.createInstaller(config);
-		File dmgInstallerFile = new File(installerFile.getAbsolutePath()
+		File dmgInstallerFile = new File(installerDir, config.installerName
 				+ ".dmg");
 		assertTrue("Expected that file '" + dmgInstallerFile + "' exists!",
 				dmgInstallerFile.exists());

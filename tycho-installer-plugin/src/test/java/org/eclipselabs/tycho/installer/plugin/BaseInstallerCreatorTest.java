@@ -6,24 +6,25 @@ import org.apache.maven.it.util.ResourceExtractor;
 import org.junit.Before;
 
 public class BaseInstallerCreatorTest {
-	protected File productDir;
+	private final String installerName = "Test App";
 
-	protected String productRootName;
-	
-	protected File installerFile;
-	
+	private File productDir;
+
+	protected File installerDir;
+
 	protected InstallerConfig config;
-	
+
 	@Before
 	public void setup() throws Exception {
 		productDir = ResourceExtractor.simpleExtractResources(getClass(),
 				"/test-app/Test App");
-		productRootName = "Test App";
-		installerFile = new File(productDir, productRootName);
-		installerFile.delete();
-		File productFile = new File(productDir, "../test.product");
+		installerDir = new File(productDir, "installer");
+		installerDir.delete();
+		installerDir.mkdirs();
+		File productFile = ResourceExtractor.simpleExtractResources(getClass(),
+				"/test-app/test.product");
 		Product product = new Product(productFile, "eclipselabs.org");
-		config = new InstallerConfig(productRootName, productDir,
-				installerFile, product);
+		config = new InstallerConfig(installerName, productDir, installerDir,
+				product);
 	}
 }

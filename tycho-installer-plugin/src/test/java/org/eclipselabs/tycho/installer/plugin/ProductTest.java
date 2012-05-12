@@ -13,10 +13,9 @@ public class ProductTest {
 	public void loadProduct() throws Exception {
 		File productFile = ResourceExtractor.simpleExtractResources(getClass(), "/test-app/test.product");
 		Product product = new Product(productFile, "eclipselabs.org");
-		assertEquals("Test App", product.getName());
-		assertEquals("1.0.0.qualifier", product.getVersion());
-		assertEquals("Test App", product.getLauncherName());
-		assertEquals("Test App.app", product.getMacOsXAppName());
-		assertEquals("This is a simple license text.", product.getLicenseText().trim());
+		assertEquals("Test App", product.name);
+		assertEquals("1.0.0.qualifier", product.version);
+		assertEquals("Test App", product.launcherName);
+		assertEquals("This is a simple license text.", product.licenseText.trim());
 	}
 }
