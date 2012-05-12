@@ -25,9 +25,7 @@
    </vm>
 
    <license>
-        <text>
-   This is a test license.
-         </text>
+        <text>This is a test license.</text>
    </license>
 
    <plugins>
