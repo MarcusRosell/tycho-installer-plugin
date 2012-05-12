@@ -7,8 +7,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.Os;
+import org.eclipse.tycho.core.utils.PlatformPropertiesUtils;
 import org.eclipselabs.tycho.installer.plugin.macosx.DmgInstallerCreator;
 import org.eclipselabs.tycho.installer.plugin.win.MsiInstallerCreator;
+
+import com.google.common.base.Joiner;
 
 /**
  * @goal create-installer
@@ -29,7 +32,6 @@ public class CreateInstallerMojo extends AbstractMojo {
 
     /**
      * @parameter
-     * @required
      */
     private File productDir;
 
@@ -59,12 +61,19 @@ public class CreateInstallerMojo extends AbstractMojo {
             return;
         }
         installerCreator.verifyToolSetup();
-        if (!installerDir.mkdirs()) {
-        	throw new MojoExecutionException("Can't create installer target directory " + installerDir);
-        }
         try {
         	String buildQualifier = mavenProject.getProperties().getProperty("buildQualifier");
             Product product = new Product(productFile, manufacturer, buildQualifier);
+            if (productDir == null) {
+            	String os = PlatformPropertiesUtils.getOS(System.getProperties());
+            	String ws = PlatformPropertiesUtils.getWS(System.getProperties());
+            	String arch = PlatformPropertiesUtils.getArch(System.getProperties());
+            	String productPath = Joiner.on(File.separator).join("products", product.id, os, ws, arch);
+            	productDir = new File(mavenProject.getBuild().getDirectory(), productPath);
+            }
+            if (!installerDir.mkdirs()) {
+            	throw new MojoExecutionException("Can't create installer target directory " + installerDir);
+            }
             InstallerConfig config = new InstallerConfig(installerName, productDir, installerDir, product);
             getLog().info(config.toString());
 

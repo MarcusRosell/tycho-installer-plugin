@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>org.eclipse.tycho</groupId>
 			<version>${tycho.version}</version>
-			<artifactId>tycho-metadata-model</artifactId>
+			<artifactId>tycho-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lowagie</groupId>

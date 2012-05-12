@@ -31,8 +31,17 @@
   <classpathentry kind="var" path="M2_REPO/org/antlr/stringtemplate/3.2/stringtemplate-3.2.jar" sourcepath="M2_REPO/org/antlr/stringtemplate/3.2/stringtemplate-3.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.7/antlr-2.7.7.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/r09/guava-r09.jar" sourcepath="M2_REPO/com/google/guava/guava/r09/guava-r09-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/tycho-core/0.14.1/tycho-core-0.14.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-archiver/1.2/plexus-archiver-1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-io/1.0.1/plexus-io-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/org.eclipse.osgi/3.8.0.v20120123-1419/org.eclipse.osgi-3.8.0.v20120123-1419.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/sisu-equinox-embedder/0.14.1/sisu-equinox-embedder-0.14.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/sisu-equinox-api/0.14.1/sisu-equinox-api-0.14.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/tycho-metadata-model/0.14.1/tycho-metadata-model-0.14.1.jar" sourcepath="M2_REPO/org/eclipse/tycho/tycho-metadata-model/0.14.1/tycho-metadata-model-0.14.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/de/pdark/decentxml/1.3/decentxml-1.3.jar" sourcepath="M2_REPO/de/pdark/decentxml/1.3/decentxml-1.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/tycho-embedder-api/0.14.1/tycho-embedder-api-0.14.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/org.eclipse.tycho.embedder.shared/0.14.1/org.eclipse.tycho.embedder.shared-0.14.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/eclipse/tycho/org.eclipse.tycho.core.shared/0.14.1/org.eclipse.tycho.core.shared-0.14.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/lowagie/itext/1.3.1/itext-1.3.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/maven/shared/maven-verifier/1.3/maven-verifier-1.3.jar" sourcepath="M2_REPO/org/apache/maven/shared/maven-verifier/1.3/maven-verifier-1.3-sources.jar"/>

@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import com.google.common.annotations.VisibleForTesting;
 
 public class Product {
+	public final String id;
     public final String name;
     public final String version;
     public final String manufacturer;
@@ -21,6 +22,7 @@ public class Product {
 
     @VisibleForTesting
     public Product(String name, String version, String manufacturer, String licenseText, String launcher, String upgradeCode) {
+    	this.id = name;
         this.name = name;
         this.version = version;
         this.manufacturer = manufacturer;
@@ -32,6 +34,7 @@ public class Product {
     public Product(File productFile, String manufacturer, String buildQualifier) throws Exception {
     	DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     	Document productConfig = documentBuilder.parse(productFile);
+    	this.id = valueFromXPath(productConfig, "/product/@uid");
 		this.name = valueFromXPath(productConfig, "/product/@name");
 		this.version = replaceQualifier(valueFromXPath(productConfig, "/product/@version"), buildQualifier);
 		this.launcherName = valueFromXPath(productConfig, "/product/launcher/@name");
@@ -48,9 +51,11 @@ public class Product {
 		return javax.xml.xpath.XPathFactory.newInstance().newXPath().evaluate(xpath, productConfig);
 	}
 
-    @Override
-    public String toString() {
-        return "Product [name=" + name + ", version=" + version + ", manufacturer=" + manufacturer + ", launcherName="
-                + launcherName + ", upgradeCode=" + upgradeCode + "]";
-    }
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", version=" + version
+				+ ", manufacturer=" + manufacturer + ", launcherName="
+				+ launcherName + ", upgradeCode=" + upgradeCode
+				+ ", licenseText=" + licenseText + "]";
+	}
 }
