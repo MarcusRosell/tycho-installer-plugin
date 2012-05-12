@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Test App"
+    Language="1033"
+    Version="1.0.0"
+    Manufacturer="eclipselabs.org"
+    UpgradeCode="UPGRADE_GUID">
+
+    <Package Description="Test App"
+      Manufacturer="eclipselabs.org"
+      InstallerVersion="200"
+      Compressed="yes" />
+
+    <Media Id="1" Cabinet="product.cab" EmbedCab="yes" CompressionLevel="high"/>
+    <SetProperty Id="WIN_INSTALL_LOCATION" Value="[ProgramFilesFolder]"
+      Before="AppSearch">
+        <![CDATA[VersionNT < 600]]>
+    </SetProperty>
+    <SetProperty Id="VISTA_INSTALL_LOCATION" Value="[LocalAppDataFolder]"
+      After="SetWIN_INSTALL_LOCATION">
+        <![CDATA[VersionNT >= 600]]>
+    </SetProperty>
+    <SetProperty Id="INSTALL_LOCATION"
+      Value="[WIN_INSTALL_LOCATION][VISTA_INSTALL_LOCATION]"
+      After="SetVISTA_INSTALL_LOCATION"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="INSTALL_LOCATION">
+        <Directory Id="APPLICATIONROOTDIRECTORY" Name="Test App"/>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Test App"/>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+          Name="Test App"
+          Description="Starts Test App"
+          Target="[APPLICATIONROOTDIRECTORY]License Text.exe"
+          WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <Shortcut Id="UninstallProduct"
+          Name="Uninstall Test App"
+          Target="[SystemFolder]msiexec.exe"
+          Arguments="/x [ProductCode]"
+          Description="Uninstalls Test App" />
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\Test App"
+          Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="ProductFeature" Title="Test App" Level="1">
+      <ComponentGroupRef Id="ProductFiles" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONROOTDIRECTORY" />
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+      <Publish Dialog="ExitDialog"
+        Control="Finish"
+        Event="DoAction"
+        Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Test App" />
+
+    <Property Id="WixShellExecTarget" Value="[#n4-ide.exe]" />
+    <CustomAction Id="LaunchApplication"
+      BinaryKey="WixCA"
+      DllEntry="WixShellExec"
+      Impersonate="yes" />
+   </Product>
+</Wix>

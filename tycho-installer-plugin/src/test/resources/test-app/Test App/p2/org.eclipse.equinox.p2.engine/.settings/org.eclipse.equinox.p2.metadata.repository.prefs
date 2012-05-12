@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/enabled=true
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/isSystem=false
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/name=publisher repository
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/suffix=content.xml
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/uri=file\:/Users/matthias/private/tycho-installer-plugin/test-project/org.eclipselabs.tycho.installer.test.product/target/publisherRepository/
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_publisherRepository/version=1.0.0
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/enabled=true
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/isSystem=false
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/name=TychoTargetPlatform
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/suffix=content.xml
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/uri=file\:/Users/matthias/private/tycho-installer-plugin/test-project/org.eclipselabs.tycho.installer.test.product/target/targetPlatformRepository/
+repositories/file\:_Users_matthias_private_tycho-installer-plugin_test-project_org.eclipselabs.tycho.installer.test.product_target_targetPlatformRepository/version=0.0.1

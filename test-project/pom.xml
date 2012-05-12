@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipselabs.tycho.installer.test</groupId>
+  <artifactId>test-project</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+  	<eclipse.repository.url>http://download.eclipse.org/eclipse/updates/3.6</eclipse.repository.url>
+  	<tycho.version>0.14.1</tycho.version>
+  </properties>
+  
+  <repositories>
+    <repository>
+      <id>update36</id>
+      <url>${eclipse.repository.url}</url>
+      <layout>p2</layout>
+    </repository>
+  </repositories>
+  
+  <modules>
+    <module>org.eclipselabs.tycho.installer.test.app</module>
+    <module>org.eclipselabs.tycho.installer.test.product</module>
+  </modules>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
