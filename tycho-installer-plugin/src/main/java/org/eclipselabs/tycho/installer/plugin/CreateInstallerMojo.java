@@ -95,13 +95,13 @@ public class CreateInstallerMojo extends AbstractMojo {
 		}
 		installerCreator.verifyToolSetup();
 		try {
-			String buildQualifier = mavenProject.getProperties().getProperty(
+			String os = PlatformPropertiesUtils.getOS(System
+					.getProperties());
+			String buildQualifier = PlatformPropertiesUtils.OS_WIN32.equals(os) ? "0" : mavenProject.getProperties().getProperty(
 					"buildQualifier");
 			Product product = new Product(productFile, manufacturer,
 					buildQualifier);
 			if (productDir == null) {
-				String os = PlatformPropertiesUtils.getOS(System
-						.getProperties());
 				String ws = PlatformPropertiesUtils.getWS(System
 						.getProperties());
 				String arch = PlatformPropertiesUtils.getArch(System
