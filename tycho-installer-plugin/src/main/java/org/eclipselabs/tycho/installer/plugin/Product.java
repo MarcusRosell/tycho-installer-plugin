@@ -24,7 +24,7 @@ public class Product {
     public Product(String name, String version, String manufacturer, String licenseText, String launcher, String upgradeCode) {
     	this.id = name;
         this.name = name;
-        this.version = version;
+        this.version = version.replace(".qualifier", "");
         this.manufacturer = manufacturer;
         this.upgradeCode = upgradeCode;
         this.launcherName = launcher;
