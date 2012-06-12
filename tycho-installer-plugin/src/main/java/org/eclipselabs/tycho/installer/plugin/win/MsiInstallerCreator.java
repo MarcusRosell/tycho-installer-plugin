@@ -27,6 +27,7 @@ import org.eclipselabs.tycho.installer.plugin.Product;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.io.Closeables;
+import com.google.common.io.Files;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.rtf.RtfWriter2;
@@ -76,18 +77,20 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
 
     @Override
     public void createInstaller(InstallerConfig config) throws Exception {
+    	File tempProductDir = Files.createTempDir();
+    	FileUtils.copyDirectoryStructure(config.productDir, tempProductDir);
         File msiProductDir = new File(config.productDir.getParentFile(), "msi");
         msiProductDir.mkdirs();
 
         File productFilesWxsFile = new File(msiProductDir, config.installerName + "-files.wxs");
-        harvestDir(config.productDir, false, "ProductFiles", "APPLICATIONROOTDIRECTORY", productFilesWxsFile);
+        harvestDir(tempProductDir, false, "ProductFiles", "APPLICATIONROOTDIRECTORY", productFilesWxsFile);
 
         File productWxsFile = new File(msiProductDir, config.installerName + ".wxs");
         generateProductWxsFile(config.product, productWxsFile);
 
         File licenseFile = createLicenseFile(msiProductDir, config.product.licenseText);
         List<File> compiledWxsFiles = compileWxsFiles(productFilesWxsFile, productWxsFile);
-        createMsiInstaller(config, config.productDir, compiledWxsFiles, licenseFile);
+        createMsiInstaller(config, tempProductDir, compiledWxsFiles, licenseFile);
     }
 
     private void harvestDir(File dir, boolean includeRootDir, String componentGroup, String directoryRef, File outFile)
