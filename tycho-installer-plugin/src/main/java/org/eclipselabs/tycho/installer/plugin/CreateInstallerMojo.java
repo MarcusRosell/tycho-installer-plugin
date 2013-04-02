@@ -7,7 +7,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.Os;
-import org.eclipse.tycho.core.utils.PlatformPropertiesUtils;
+import org.eclipse.tycho.core.resolver.shared.PlatformPropertiesUtils;
 import org.eclipselabs.tycho.installer.plugin.macosx.DmgInstallerCreator;
 import org.eclipselabs.tycho.installer.plugin.win.MsiInstallerCreator;
 
