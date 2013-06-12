@@ -35,6 +35,7 @@ import com.lowagie.text.rtf.RtfWriter2;
 public class MsiInstallerCreator extends AbstractInstallerCreator {
     private final static List<String> COMMON_ARGS = Arrays.asList("-ext", "WixUIExtension", "-ext", "WixUtilExtension");
     private StringTemplateGroup templateGroup;
+    private StringTemplateGroup noLicenseTemplateGroup;
 
     public MsiInstallerCreator(Log log) {
         super(log);
@@ -42,7 +43,11 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
     }
 
     private void initTemplates() {
-        String template = "product-wxs.stg";
+		templateGroup = initTemplate("product-wxs.stg");
+		noLicenseTemplateGroup = initTemplate("product-nolicense-wxs.stg");
+    }
+	
+	private StringTemplateGroup initTemplate(String template) {
         final InputStream inputStream = getClass().getResourceAsStream(template);
         if (inputStream == null) {
             throw new IllegalStateException("Error: " + template + " not found");
@@ -50,14 +55,14 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
         try {
             final Reader reader = new BufferedReader(new InputStreamReader(inputStream, Charsets.UTF_8));
             try {
-                templateGroup = new StringTemplateGroup(reader, DefaultTemplateLexer.class);
+                return new StringTemplateGroup(reader, DefaultTemplateLexer.class);
             } finally {
                 Closeables.closeQuietly(reader);
             }
         } finally {
             Closeables.closeQuietly(inputStream);
         }
-    }
+	}
 
     @Override
     public void verifyToolSetup() throws IllegalStateException {
@@ -86,9 +91,13 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
         harvestDir(tempProductDir, false, "ProductFiles", "APPLICATIONROOTDIRECTORY", productFilesWxsFile);
 
         File productWxsFile = new File(msiProductDir, config.installerName + ".wxs");
-        generateProductWxsFile(config.product, productWxsFile);
+		boolean includeLicenseAgreement = !config.product.licenseText.equals("");
+        generateProductWxsFile(config.product, productWxsFile, includeLicenseAgreement);
 
-        File licenseFile = createLicenseFile(msiProductDir, config.product.licenseText);
+        File licenseFile = null;
+		if (includeLicenseAgreement) {
+			licenseFile = createLicenseFile(msiProductDir, config.product.licenseText);
+		}
         List<File> compiledWxsFiles = compileWxsFiles(productFilesWxsFile, productWxsFile);
         createMsiInstaller(config, tempProductDir, compiledWxsFiles, licenseFile);
     }
@@ -109,8 +118,8 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
     }
 
     @VisibleForTesting
-    void generateProductWxsFile(Product product, File productWxsFile) throws IOException {
-        StringTemplate template = templateGroup.getInstanceOf("productWxsFile");
+    void generateProductWxsFile(Product product, File productWxsFile, boolean includeLicenseAgreement) throws IOException {
+        StringTemplate template = (includeLicenseAgreement ? templateGroup : noLicenseTemplateGroup).getInstanceOf("productWxsFile");
         template.setAttribute("product", product);
         FileOutputStream fileOutputStream = null;
         OutputStreamWriter outputStreamWriter = null;
@@ -149,7 +158,9 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
             List<File> compiledWxsFiles, File licenseFile) throws Exception {
         List<String> args = new ArrayList<String>();
 
-        args.add("-dWixUILicenseRtf=" + licenseFile.getAbsolutePath());
+        if (licenseFile != null) {
+			args.add("-dWixUILicenseRtf=" + licenseFile.getAbsolutePath());
+		}
         Collections.addAll(args, "-out", new File(config.installerDir, config.installerName + ".msi").getAbsolutePath());
 
         for (File compiledWxsFile : compiledWxsFiles) {
