@@ -48,7 +48,7 @@ public class MsiInstallerCreatorTest extends BaseInstallerCreatorTest {
         Product product = new Product("Test App", "1.0.0",
                 "eclipselabs.org", "License Text", "Test App", "UPGRADE_GUID");
 
-        msiInstallerCreator.generateProductWxsFile(product, productWxsFile);
+        msiInstallerCreator.generateProductWxsFile(product, productWxsFile, true);
 
         FileInputStream fileInputStream = null;
         InputStream inputStream = null;
