@@ -10,13 +10,13 @@
       Manufacturer="eclipselabs.org"
       InstallerVersion="200"
       Compressed="yes" />
-    
+
     <Upgrade Id="UPGRADE_GUID">
       <UpgradeVersion OnlyDetect="no" Property="OLDERFOUND" Maximum="1.0.0" IncludeMaximum="no"/>
       <UpgradeVersion OnlyDetect="no" Property="SELFFOUND" Minimum="1.0.0" IncludeMinimum="yes" Maximum="1.0.0" IncludeMaximum="yes"/>
       <UpgradeVersion OnlyDetect="yes" Property="NEWERFOUND" Minimum="1.0.0" IncludeMinimum="no"/>
     </Upgrade>
-    
+
     <CustomAction Id="NewerVersionInstalled" Error="A later version of [ProductName] is already installed. Please uninstall this version before downgrading." />
     <InstallExecuteSequence>
       <Custom Action="NewerVersionInstalled" After="FindRelatedProducts">NEWERFOUND AND Not(SELFFOUND) AND Not(OLDERFOUND)</Custom>
