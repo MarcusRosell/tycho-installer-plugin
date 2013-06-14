@@ -106,7 +106,7 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
             throws CommandLineException {
         List<String> args = new ArrayList<String>();
         Collections.addAll(args, "dir", dir.getAbsolutePath());
-        Collections.addAll(args, "-template", "fragment", "-gg", "-sfrag", "-scom");
+        Collections.addAll(args, "-template", "fragment", "-gg", "-sfrag", "-scom", "-sreg");
         if (!includeRootDir)
             args.add("-srd");
         Collections.addAll(args, "-cg", componentGroup);
@@ -143,7 +143,7 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
             compiledFiles.add(outFile);
 
             List<String> args = new ArrayList<String>();
-            Collections.addAll(args, "-out", outFile.getAbsolutePath());
+            Collections.addAll(args, "-sw1077", "-out", outFile.getAbsolutePath());
             args.add(wxsFile.getAbsolutePath());
             args.addAll(COMMON_ARGS);
 
@@ -167,7 +167,7 @@ public class MsiInstallerCreator extends AbstractInstallerCreator {
             args.add(compiledWxsFile.getAbsolutePath());
         }
         args.addAll(COMMON_ARGS);
-        Collections.addAll(args, "-b", productDir.getAbsolutePath());
+        Collections.addAll(args, "-sw1076", "-b", productDir.getAbsolutePath());
 
         Commandline cmd = buildCmd("light", args);
         executeCmd(cmd);

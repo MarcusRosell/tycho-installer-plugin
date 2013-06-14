@@ -1,25 +1,22 @@
-group MsiProduct;
-
-productWxsFile(product) ::= <<
 <?xml version="1.0"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="$product.name$"
+  <Product Id="*" Name="Test App"
     Language="1033"
-    Version="$product.version$"
-    Manufacturer="$product.manufacturer$"
-    UpgradeCode="$product.upgradeCode$">
+    Version="1.0.0"
+    Manufacturer="eclipselabs.org"
+    UpgradeCode="UPGRADE_GUID">
 
-    <Package Description="$product.name$"
-      Manufacturer="$product.manufacturer$"
+    <Package Description="Test App"
+      Manufacturer="eclipselabs.org"
       InstallerVersion="200"
       Compressed="yes" />
-
-    <Upgrade Id="$product.upgradeCode$">
-      <UpgradeVersion OnlyDetect="no" Property="OLDERFOUND" Maximum="$product.version$" IncludeMaximum="no"/>
-      <UpgradeVersion OnlyDetect="no" Property="SELFFOUND" Minimum="$product.version$" IncludeMinimum="yes" Maximum="$product.version$" IncludeMaximum="yes"/>
-      <UpgradeVersion OnlyDetect="yes" Property="NEWERFOUND" Minimum="$product.version$" IncludeMinimum="no"/>
+    
+    <Upgrade Id="UPGRADE_GUID">
+      <UpgradeVersion OnlyDetect="no" Property="OLDERFOUND" Maximum="1.0.0" IncludeMaximum="no"/>
+      <UpgradeVersion OnlyDetect="no" Property="SELFFOUND" Minimum="1.0.0" IncludeMinimum="yes" Maximum="1.0.0" IncludeMaximum="yes"/>
+      <UpgradeVersion OnlyDetect="yes" Property="NEWERFOUND" Minimum="1.0.0" IncludeMinimum="no"/>
     </Upgrade>
-
+    
     <CustomAction Id="NewerVersionInstalled" Error="A later version of [ProductName] is already installed. Please uninstall this version before downgrading." />
     <InstallExecuteSequence>
       <Custom Action="NewerVersionInstalled" After="FindRelatedProducts">NEWERFOUND AND Not(SELFFOUND) AND Not(OLDERFOUND)</Custom>
@@ -41,32 +38,32 @@ productWxsFile(product) ::= <<
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="INSTALL_LOCATION">
-        <Directory Id="APPLICATIONROOTDIRECTORY" Name="$product.name$"/>
+        <Directory Id="APPLICATIONROOTDIRECTORY" Name="Test App"/>
       </Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="$product.name$"/>
+        <Directory Id="ApplicationProgramsFolder" Name="Test App"/>
       </Directory>
     </Directory>
 
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="*">
         <Shortcut Id="ApplicationStartMenuShortcut"
-          Name="$product.name$"
-          Description="Starts $product.name$"
-          Target="[APPLICATIONROOTDIRECTORY]$product.launcherName$.exe"
+          Name="Test App"
+          Description="Starts Test App"
+          Target="[APPLICATIONROOTDIRECTORY]Test App.exe"
           WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
         <Shortcut Id="UninstallProduct"
-          Name="Uninstall $product.name$"
+          Name="Uninstall Test App"
           Target="[SystemFolder]msiexec.exe"
           Arguments="/x [ProductCode]"
-          Description="Uninstalls $product.name$" />
+          Description="Uninstalls Test App" />
         <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
-        <RegistryValue Root="HKCU" Key="Software\Microsoft\\$product.name$"
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\Test App"
           Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
-    <Feature Id="ProductFeature" Title="$product.name$" Level="1">
+    <Feature Id="ProductFeature" Title="Test App" Level="1">
       <ComponentGroupRef Id="ProductFiles" />
       <ComponentRef Id="ApplicationShortcut" />
     </Feature>
@@ -74,18 +71,20 @@ productWxsFile(product) ::= <<
     <Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONROOTDIRECTORY" />
     <UI>
       <UIRef Id="WixUI_InstallDir" />
+      <!-- skip licence dialog -->
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
       <Publish Dialog="ExitDialog"
         Control="Finish"
         Event="DoAction"
         Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
     </UI>
-    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch $product.name$" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Test App" />
 
-    <Property Id="WixShellExecTarget" Value="&quot;[APPLICATIONROOTDIRECTORY]$product.launcherName$.exe&quot;" />
+    <Property Id="WixShellExecTarget" Value="&quot;[APPLICATIONROOTDIRECTORY]Test App.exe&quot;" />
     <CustomAction Id="LaunchApplication"
       BinaryKey="WixCA"
       DllEntry="WixShellExec"
       Impersonate="yes" />
    </Product>
 </Wix>
->>
