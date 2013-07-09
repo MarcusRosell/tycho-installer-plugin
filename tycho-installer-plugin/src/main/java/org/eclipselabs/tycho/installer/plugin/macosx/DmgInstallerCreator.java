@@ -95,7 +95,7 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
         }
     }
 
-    private void fixLauncher(File launcherDir) throws CommandLineException, IOException {
+    private void fixLauncherPermissions(File launcherDir) throws CommandLineException, IOException {
         File[] programs = launcherDir.listFiles(new FilenameFilter() {
 
             @Override
