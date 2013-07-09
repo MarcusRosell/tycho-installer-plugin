@@ -1,6 +1,7 @@
 package org.eclipselabs.tycho.installer.plugin;
 
 import java.io.File;
+import java.util.Map;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,7 +35,7 @@ public class CreateInstallerMojo extends AbstractMojo {
 	protected MavenProject mavenProject;
 
 	/**
-	 * The name of the maufacturer, needed for creating a msi installer.
+	 * The name of the manufacturer, needed for creating a msi installer.
 	 * 
 	 * @parameter
 	 * @required
@@ -58,6 +59,12 @@ public class CreateInstallerMojo extends AbstractMojo {
 	 * @parameter
 	 */
 	private String rootFolder;
+
+	/**
+	 * OS-specific name of the root folder of the materialized product using <tt>osgi.os</tt>
+	 * environment values as keys. Has precedence over rootFolder.
+	 */
+	private Map<String, String> rootFolders;
 
 	/**
 	 * Path to the .product file. The .product file is used to retrieve the
@@ -107,8 +114,8 @@ public class CreateInstallerMojo extends AbstractMojo {
 				String arch = PlatformPropertiesUtils.getArch(System
 						.getProperties());
 				Joiner joiner = Joiner.on(File.separator);
-				String productPath = rootFolder != null ? joiner.join(
-						"products", product.id, os, ws, arch, rootFolder)
+				String productPath = getRootFolder() != null ? joiner.join(
+						"products", product.id, os, ws, arch, getRootFolder())
 						: joiner.join("products", product.id, os, ws, arch);
 				productDir = new File(mavenProject.getBuild().getDirectory(),
 						productPath);
@@ -137,5 +144,27 @@ public class CreateInstallerMojo extends AbstractMojo {
 			return new MsiInstallerCreator(getLog());
 		}
 		return null;
+	}
+
+        private String getRootFolder() {
+		if (Os.isFamily(Os.FAMILY_MAC)) {
+			return getRootFolder("macosx");
+		}
+		if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+			return getRootFolder("win32");
+		}
+		return getRootFolder(null);
+	}
+
+	private String getRootFolder(String os) {
+		if (rootFolders == null) {
+			return rootFolder;
+		} else {
+			if (rootFolders.get(os) == null) {
+				return rootFolder;
+			} else {
+				return rootFolders.get(os);
+			}
+		}
 	}
 }
