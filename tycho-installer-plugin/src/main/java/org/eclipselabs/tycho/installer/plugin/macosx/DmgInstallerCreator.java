@@ -26,8 +26,11 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
 
     private final File hdiutil = new File("/usr/bin/hdiutil");
 
+    private final org.apache.maven.plugin.logging.Log log;
+
     public DmgInstallerCreator(Log log) {
         super(log);
+        this.log = log;
     }
 
     @Override
@@ -42,9 +45,23 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
         File dmgProductDir = new File(new File(config.productDir.getParentFile(), "dmg"), config.installerName);
         dmgProductDir.mkdirs();
 
-        repackageProduct(config, config.productDir, dmgProductDir);
+        if( config.productDir.getName().endsWith(".app" ) ) {
+            copyProduct(config, config.productDir, dmgProductDir);
+        } else {
+            repackageProduct(config, config.productDir, dmgProductDir);
+        }
         createApplicationsLink(dmgProductDir);
         createProductDmg(config, dmgProductDir);
+    }
+
+    private void copyProduct(final InstallerConfig config, File productDir, File dmgProductDir) throws Exception {
+        if (!productDir.exists()) {
+            throw new IllegalStateException("No app was found at:'" + productDir + "'!");
+        }
+        File dmgAppDir = new File(dmgProductDir, productDir.getName());
+        FileUtils.copyDirectoryStructure(productDir, dmgAppDir);
+        File pluginsDir = new File(productDir, "plugins");
+        fixLauncherPermissions(new File(dmgAppDir, "Contents/MacOS"));
     }
 
     private void repackageProduct(final InstallerConfig config, File productDir, File dmgProductDir) throws Exception {
@@ -57,7 +74,8 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
 
         FileUtils.copyDirectoryStructure(appDir, dmgAppDir);
         File pluginsDir = new File(productDir, "plugins");
-        fixLauncher(new File(dmgAppDir, "Contents/MacOS"), pluginsDir);
+        fixLauncherPermissions(new File(dmgAppDir, "Contents/MacOS"));
+        fixIniFiles(new File(dmgAppDir, "Contents/MacOS"), pluginsDir);
         
         File[] filesToCopy = productDir.listFiles(new FilenameFilter() {
 
@@ -77,19 +95,7 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
         }
     }
 
-    private void fixLauncher(File launcherDir, File pluginsDir) throws CommandLineException, IOException {
-        @SuppressWarnings("unchecked")
-        List<String> launcherJarNames = FileUtils.getFileNames(pluginsDir, LAUNCHER_JAR_PATTERN, null, false);
-        if (launcherJarNames.size() != 1) {
-            throw new IllegalStateException("Can't find " + LAUNCHER_JAR_PATTERN + " file in " + pluginsDir + "!");
-        }
-        String launcherJarName = launcherJarNames.get(0);
-        @SuppressWarnings("unchecked")
-        List<String> launcherLibraryNames = FileUtils.getDirectoryNames(pluginsDir, LAUNCHER_LIBRARY_PATTERN, null, false);
-        if (launcherLibraryNames.size() != 1) {
-            throw new IllegalStateException("Can't find " + LAUNCHER_LIBRARY_PATTERN + " directory in " + pluginsDir + "!");            
-        }
-        String launcherLibraryName = launcherLibraryNames.get(0);
+    private void fixLauncher(File launcherDir) throws CommandLineException, IOException {
         File[] programs = launcherDir.listFiles(new FilenameFilter() {
 
             @Override
@@ -104,6 +110,20 @@ public class DmgInstallerCreator extends AbstractInstallerCreator {
         args.add(programs[0].getAbsolutePath());
         cmd.addArguments(args.toArray(new String[args.size()]));
         executeCmd(cmd);
+    }
+
+    private void fixIniFiles(File launcherDir, File pluginsDir) throws IOException {
+        List<String> launcherJarNames = FileUtils.getFileNames(pluginsDir, LAUNCHER_JAR_PATTERN, null, false);
+        if (launcherJarNames.size() != 1) {
+            throw new IllegalStateException("Can't find " + LAUNCHER_JAR_PATTERN + " file in " + pluginsDir + "!");
+        }
+        String launcherJarName = launcherJarNames.get(0);
+        @SuppressWarnings("unchecked")
+        List<String> launcherLibraryNames = FileUtils.getDirectoryNames(pluginsDir, LAUNCHER_LIBRARY_PATTERN, null, false);
+        if (launcherLibraryNames.size() != 1) {
+            throw new IllegalStateException("Can't find " + LAUNCHER_LIBRARY_PATTERN + " directory in " + pluginsDir + "!");
+        }
+        String launcherLibraryName = launcherLibraryNames.get(0);
         File[] iniFiles = launcherDir.listFiles(new FilenameFilter() {
 
             @Override
