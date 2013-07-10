@@ -63,6 +63,8 @@ public class CreateInstallerMojo extends AbstractMojo {
 	/**
 	 * OS-specific name of the root folder of the materialized product using <tt>osgi.os</tt>
 	 * environment values as keys. Has precedence over rootFolder.
+         *
+         * @parameter
 	 */
 	private Map<String, String> rootFolders;
 
